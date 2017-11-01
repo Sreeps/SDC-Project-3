@@ -6,12 +6,14 @@ Authors: Arvind, Shantanu, Sripathi
 """
 
 import numpy as np
+import Check_void as CV
 
 
 def intersect(a, b):
     result = np.logical_and(a, b).astype(int)
     result_sum = result[::2]+result[1::2]
-    if np.where(result_sum == 0).size == 0:
+    print(result_sum)
+    if np.count_nonzero(result_sum) == int(a.size/2):
         return 1, result
     else:
         return 0, result
@@ -19,13 +21,16 @@ def intersect(a, b):
 
 def cofactor(a, b):
     flag, result = intersect(a, b)
-    b_not = np.logical_or(b)
+    print(flag, result)
+    b_not = np.logical_not(b)
     if flag == 0:
-        return np.zeros(a.size)
+        result_cof = np.zeros(a.size, dtype=int)
     else:
-        cof = np.logical_or(a, b_not)
+        cof = np.logical_or(a, b_not).astype(int)
         cof_sum = cof[::2] + cof[1::2]
-        if np.where(cof_sum == 0).size == 0:
-            return cof_sum
+        if np.count_nonzero(cof_sum) == int(a.size/2):
+            result_cof = cof
         else:
-            return np.zeros(a.size)
+            result_cof = np.zeros(a.size, dtype=int)
+    print(result_cof)
+    return result_cof
